@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-5 text-center">
+            <p>
+                <img src="{{ user.avatar(120) }}" alt="User avatar">
+            </p>  
+        </div>
+        <div class="col-md-7">
+            <p>
+                <strong>Username: </strong> {{ user.username }}
+            </p>
+            <p>
+                <strong>Email: </strong> {{ user.email }}
+            </p>
+            {% if user.last_seen %}
+            <p>
+                <strong>Last Seen:</strong> {{ user.last_seen }}
+            </p>
+            {% endif %}
+            {% if user.about_me %}
+            <p>
+                <strong>About me:</strong> {{ user.about_me}}
+            </p>
+            {% endif %}
+            <p>
+                <a href="{{ url_for('edit_profile') }}">Edit Profile</a>
+            </p>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-12">
+            {% for comment in comments %}
+            {% if comment %}
+                <table>
+                    <tr valign="top">
+                        <td><img src="{{ comment.author.avatar(36) }}" alt=""></td>
+                        <td>{{ comment.author.username }} says:<br>{{ comment.body }}</td>
+                    </tr>
+                </table>
+            {% endif %}
+        {% endfor %}
+        </div>
+    </div>
+{% endblock %}

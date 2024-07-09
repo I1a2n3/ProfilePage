@@ -1,0 +1,58 @@
+{%extends 'base.html'%}
+
+{% block content %}
+{% if current_user.is_authenticated %}  
+    <div class="row">
+        <div class="col-md-12">
+            <p>
+                Hi {{ current_user.username }}, say something:
+            </p>
+            <form action="" method="post" novalidate>
+                {{ form.hidden_tag() }}
+                <p>
+                    {{ form.body.label }} <br>
+                    {{ form.body(cols=100, rows=4) }} <br>
+                    {% for error in form.body.errors %}
+                        <span style="color: red;">
+                            {{ error }} 
+                        </span>
+                        {% endfor %}
+                </p>
+                <p>
+                    {{ form.submit() }}
+                </p>
+            </form>
+        </div>
+    </div>
+    <hr>
+    {% endif %}
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-striped table-bordered" >
+                <thead>
+                    <th>Avatar</th>
+                    <th>Username</th>
+                    <th>Bio</th>
+                    <th>Message</th>
+                    <th>When</th>
+                </thead>
+                <tbody>
+                    {% for comment in comments %}
+                        {% if comment %}
+                            <tr>
+                                <td><img src="{{ comment.author.avatar(36) }}" alt="Avatar"></td>
+                                <td>{{ comment.author.username }}</td>
+                                <td>{{ comment.author.about_me }}</td>
+                                <td>{{ comment.body }}</td>
+                                <td>{{ comment.timestamp }}</td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% if current_user.is_anonymous %}
+                <a href="{{ url_for ('login') }}">Login to post a comment</a>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
